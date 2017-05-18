@@ -8,5 +8,5 @@ Docker+SpringBoot+Mybatis+thymeleaf的Java开源博客系统
 
 # Quick Start
 
-## 3.1.0 fenzhi分
+## 3.1.0 分支 新功能扩展及部分bug修复
 
