@@ -1,10 +1,20 @@
 package com.my.blog.website.service.impl;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
+import com.my.blog.website.dao.ContentVoMapper;
 import com.my.blog.website.dao.MetaVoMapper;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Vo.ContentVo;
 import com.my.blog.website.modal.Vo.ContentVoExample;
@@ -15,14 +25,6 @@ import com.my.blog.website.utils.DateKit;
 import com.my.blog.website.utils.TaleUtils;
 import com.my.blog.website.utils.Tools;
 import com.vdurmont.emoji.EmojiParser;
-import com.my.blog.website.dao.ContentVoMapper;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/13 013.
@@ -91,8 +93,8 @@ public class ContentServiceImpl implements IContentService {
         contentDao.insert(contents);
         Integer cid = contents.getCid();
 
-        metasService.saveMetas(cid, tags, Types.TAG.getType());
-        metasService.saveMetas(cid, categories, Types.CATEGORY.getType());
+        metasService.saveMetas(cid, tags, TypeEnum.TAG.getType());
+        metasService.saveMetas(cid, categories, TypeEnum.CATEGORY.getType());
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ContentServiceImpl implements IContentService {
         LOGGER.debug("Enter getContents method");
         ContentVoExample example = new ContentVoExample();
         example.setOrderByClause("created desc");
-        example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+        example.createCriteria().andTypeEqualTo(TypeEnum.ARTICLE.getType()).andStatusEqualTo(TypeEnum.PUBLISH.getType());
         PageHelper.startPage(p, limit);
         List<ContentVo> data = contentDao.selectByExampleWithBLOBs(example);
         PageInfo<ContentVo> pageInfo = new PageInfo<>(data);
@@ -153,8 +155,8 @@ public class ContentServiceImpl implements IContentService {
         PageHelper.startPage(page, limit);
         ContentVoExample contentVoExample = new ContentVoExample();
         ContentVoExample.Criteria criteria = contentVoExample.createCriteria();
-        criteria.andTypeEqualTo(Types.ARTICLE.getType());
-        criteria.andStatusEqualTo(Types.PUBLISH.getType());
+        criteria.andTypeEqualTo(TypeEnum.ARTICLE.getType());
+        criteria.andStatusEqualTo(TypeEnum.PUBLISH.getType());
         criteria.andTitleLike("%" + keyword + "%");
         contentVoExample.setOrderByClause("created desc");
         List<ContentVo> contentVos = contentDao.selectByExampleWithBLOBs(contentVoExample);
@@ -216,7 +218,7 @@ public class ContentServiceImpl implements IContentService {
 
         contentDao.updateByPrimaryKeySelective(contents);
         relationshipService.deleteById(cid, null);
-        metasService.saveMetas(cid, contents.getTags(), Types.TAG.getType());
-        metasService.saveMetas(cid, contents.getCategories(), Types.CATEGORY.getType());
+        metasService.saveMetas(cid, contents.getTags(), TypeEnum.TAG.getType());
+        metasService.saveMetas(cid, contents.getCategories(), TypeEnum.CATEGORY.getType());
     }
 }

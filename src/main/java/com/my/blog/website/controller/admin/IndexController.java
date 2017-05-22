@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.controller.common.AbstractBaseController;
-import com.my.blog.website.dto.LogActions;
+import com.my.blog.website.enums.LogActionEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.RestResponseBo;
 import com.my.blog.website.modal.Bo.StatisticsBo;
@@ -97,7 +97,7 @@ public class IndexController extends AbstractBaseController {
             temp.setScreenName(screenName);
             temp.setEmail(email);
             userService.updateByUid(temp);
-            logService.insertLog(LogActions.UP_INFO.getAction(), GsonUtils.toJsonString(temp), request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.UP_INFO.getAction(), GsonUtils.toJsonString(temp), request.getRemoteAddr(), this.getUid(request));
 
             //更新session中的数据
             UserVo original= (UserVo)session.getAttribute(WebConst.LOGIN_SESSION_KEY);
@@ -134,7 +134,7 @@ public class IndexController extends AbstractBaseController {
             String pwd = TaleUtils.MD5encode(users.getUsername() + password);
             temp.setPassword(pwd);
             userService.updateByUid(temp);
-            logService.insertLog(LogActions.UP_PWD.getAction(), null, request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.UP_PWD.getAction(), null, request.getRemoteAddr(), this.getUid(request));
 
             //更新session中的数据
             UserVo original= (UserVo)session.getAttribute(WebConst.LOGIN_SESSION_KEY);

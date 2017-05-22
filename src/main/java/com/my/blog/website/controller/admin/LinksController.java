@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.blog.website.controller.common.AbstractBaseController;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.RestResponseBo;
 import com.my.blog.website.modal.Vo.MetaVo;
@@ -36,7 +36,7 @@ public class LinksController extends AbstractBaseController {
 
     @GetMapping(value = "")
     public String index(HttpServletRequest request) {
-        List<MetaVo> metas = metasService.getMetas(Types.LINK.getType());
+        List<MetaVo> metas = metasService.getMetas(TypeEnum.LINK.getType());
         request.setAttribute("links", metas);
         return "admin/links";
     }
@@ -54,7 +54,7 @@ public class LinksController extends AbstractBaseController {
             metas.setSlug(url);
             metas.setDescription(logo);
             metas.setSort(sort);
-            metas.setType(Types.LINK.getType());
+            metas.setType(TypeEnum.LINK.getType());
             if (null != mid) {
                 metas.setMid(mid);
                 metasService.update(metas);

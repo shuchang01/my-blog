@@ -24,8 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.controller.common.AbstractBaseController;
-import com.my.blog.website.dto.LogActions;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.LogActionEnum;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.RestResponseBo;
 import com.my.blog.website.modal.Vo.AttachVo;
@@ -67,7 +67,7 @@ public class AttachController extends AbstractBaseController {
                         @RequestParam(value = "limit", defaultValue = "12") int limit) {
         PageInfo<AttachVo> attachPaginator = attachService.getAttachs(page, limit);
         request.setAttribute("attachs", attachPaginator);
-        request.setAttribute(Types.ATTACH_URL.getType(), Commons.site_option(Types.ATTACH_URL.getType(), Commons.site_url()));
+        request.setAttribute(TypeEnum.ATTACH_URL.getType(), Commons.site_option(TypeEnum.ATTACH_URL.getType(), Commons.site_url()));
         request.setAttribute("max_file_size", WebConst.MAX_FILE_SIZE / 1024);
         return "admin/attach";
     }
@@ -91,7 +91,7 @@ public class AttachController extends AbstractBaseController {
                 String fname = multipartFile.getOriginalFilename();
                 if (multipartFile.getSize() <= WebConst.MAX_FILE_SIZE) {
                     String fkey = TaleUtils.getFileKey(fname);
-                    String ftype = TaleUtils.isImage(multipartFile.getInputStream()) ? Types.IMAGE.getType() : Types.FILE.getType();
+                    String ftype = TaleUtils.isImage(multipartFile.getInputStream()) ? TypeEnum.IMAGE.getType() : TypeEnum.FILE.getType();
                     File file = new File(CLASSPATH+fkey);
                     try {
                         FileCopyUtils.copy(multipartFile.getInputStream(),new FileOutputStream(file));
@@ -119,7 +119,7 @@ public class AttachController extends AbstractBaseController {
             if (null == attach) return RestResponseBo.fail("不存在该附件");
             attachService.deleteById(id);
             new File(CLASSPATH+attach.getFkey()).delete();
-            logService.insertLog(LogActions.DEL_ARTICLE.getAction(), attach.getFkey(), request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.DEL_ARTICLE.getAction(), attach.getFkey(), request.getRemoteAddr(), this.getUid(request));
         } catch (Exception e) {
             String msg = "附件删除失败";
             if (e instanceof TipException) msg = e.getMessage();

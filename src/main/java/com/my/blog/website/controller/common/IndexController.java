@@ -25,7 +25,7 @@ import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.dto.ErrorCode;
 import com.my.blog.website.dto.MetaDto;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.ArchiveBo;
 import com.my.blog.website.modal.Bo.CommentBo;
@@ -181,7 +181,7 @@ public class IndexController extends AbstractBaseController {
             return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
         }
 
-        String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
+        String token = cache.hget(TypeEnum.CSRF_TOKEN.getType(), _csrf_token);
         if (StringUtils.isBlank(token)) {
             return RestResponseBo.fail(ErrorCode.BAD_REQUEST);
         }
@@ -207,7 +207,7 @@ public class IndexController extends AbstractBaseController {
         }
 
         String val = IPKit.getIpAddrByRequest(request) + ":" + cid;
-        Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
+        Integer count = cache.hget(TypeEnum.COMMENTS_FREQUENCY.getType(), val);
         if (null != count && count > 0) {
             return RestResponseBo.fail("您发表评论太快了，请过会再试");
         }
@@ -234,7 +234,7 @@ public class IndexController extends AbstractBaseController {
                 cookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
             }
             // 设置对每个文章1分钟可以评论一次
-            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 60);
+            cache.hset(TypeEnum.COMMENTS_FREQUENCY.getType(), val, 1, 60);
             return RestResponseBo.ok();
         } catch (Exception e) {
             String msg = "评论发布失败";
@@ -262,7 +262,7 @@ public class IndexController extends AbstractBaseController {
     public String categories(HttpServletRequest request, @PathVariable String keyword,
                              @PathVariable int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         page = page < 0 || page > WebConst.MAX_PAGE ? 1 : page;
-        MetaDto metaDto = metaService.getMeta(Types.CATEGORY.getType(), keyword);
+        MetaDto metaDto = metaService.getMeta(TypeEnum.CATEGORY.getType(), keyword);
         if (null == metaDto) {
             return this.render_404();
         }
@@ -297,7 +297,7 @@ public class IndexController extends AbstractBaseController {
      */
     @GetMapping(value = "links")
     public String links(HttpServletRequest request) {
-        List<MetaVo> links = metaService.getMetas(Types.LINK.getType());
+        List<MetaVo> links = metaService.getMetas(TypeEnum.LINK.getType());
         request.setAttribute("links", links);
         return this.render("links");
     }
@@ -396,7 +396,7 @@ public class IndexController extends AbstractBaseController {
         page = page < 0 || page > WebConst.MAX_PAGE ? 1 : page;
 //        对于空格的特殊处理
         name = name.replaceAll("\\+", " ");
-        MetaDto metaDto = metaService.getMeta(Types.TAG.getType(), name);
+        MetaDto metaDto = metaService.getMeta(TypeEnum.TAG.getType(), name);
         if (null == metaDto) {
             return this.render_404();
         }

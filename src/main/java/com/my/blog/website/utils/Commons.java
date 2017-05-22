@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.dto.MetaDto;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.modal.Vo.CommentVo;
 import com.my.blog.website.modal.Vo.ContentVo;
 import com.my.blog.website.service.ISiteService;
@@ -326,7 +326,7 @@ public final class Commons {
 	 * @return
 	 */
 	public static List<MetaDto> categries(int limit) {
-		return siteService.metas(Types.CATEGORY.getType(), null, limit);
+		return siteService.metas(TypeEnum.CATEGORY.getType(), null, limit);
 	}
 
 	/**
@@ -344,7 +344,7 @@ public final class Commons {
 	 * @return
 	 */
 	public static List<MetaDto> tags(int limit) {
-		return siteService.metas(Types.TAG.getType(), null, limit);
+		return siteService.metas(TypeEnum.TAG.getType(), null, limit);
 	}
 
 	/**

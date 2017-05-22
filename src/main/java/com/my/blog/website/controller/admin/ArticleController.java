@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.controller.common.AbstractBaseController;
-import com.my.blog.website.dto.LogActions;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.LogActionEnum;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.RestResponseBo;
 import com.my.blog.website.modal.Vo.ContentVo;
@@ -56,7 +56,7 @@ public class ArticleController extends AbstractBaseController {
                         @RequestParam(value = "limit", defaultValue = "15") int limit, HttpServletRequest request) {
         ContentVoExample contentVoExample = new ContentVoExample();
         contentVoExample.setOrderByClause("created desc");
-        contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType());
+        contentVoExample.createCriteria().andTypeEqualTo(TypeEnum.ARTICLE.getType());
         PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample,page,limit);
         request.setAttribute("articles", contentsPaginator);
         return "admin/article_list";
@@ -64,7 +64,7 @@ public class ArticleController extends AbstractBaseController {
 
     @GetMapping(value = "/publish")
     public String newArticle(HttpServletRequest request) {
-        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType());
+        List<MetaVo> categories = metasService.getMetas(TypeEnum.CATEGORY.getType());
         request.setAttribute("categories", categories);
         return "admin/article_edit";
     }
@@ -73,7 +73,7 @@ public class ArticleController extends AbstractBaseController {
     public String editArticle(@PathVariable String cid, HttpServletRequest request) {
         ContentVo contents = contentsService.getContents(cid);
         request.setAttribute("contents", contents);
-        List<MetaVo> categories = metasService.getMetas(Types.CATEGORY.getType());
+        List<MetaVo> categories = metasService.getMetas(TypeEnum.CATEGORY.getType());
         request.setAttribute("categories", categories);
         request.setAttribute("active", "article");
         return "admin/article_edit";
@@ -86,7 +86,7 @@ public class ArticleController extends AbstractBaseController {
     public RestResponseBo publishArticle(ContentVo contents,  HttpServletRequest request) {
         UserVo users = this.user(request);
         contents.setAuthorId(users.getUid());
-        contents.setType(Types.ARTICLE.getType());
+        contents.setType(TypeEnum.ARTICLE.getType());
         if (StringUtils.isBlank(contents.getCategories())) {
             contents.setCategories("默认分类");
         }
@@ -111,7 +111,7 @@ public class ArticleController extends AbstractBaseController {
     public RestResponseBo modifyArticle(ContentVo contents,HttpServletRequest request) {
         UserVo users = this.user(request);
         contents.setAuthorId(users.getUid());
-        contents.setType(Types.ARTICLE.getType());
+        contents.setType(TypeEnum.ARTICLE.getType());
         try {
             contentsService.updateArticle(contents);
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class ArticleController extends AbstractBaseController {
     public RestResponseBo delete(@RequestParam int cid, HttpServletRequest request) {
         try {
             contentsService.deleteByCid(cid);
-            logService.insertLog(LogActions.DEL_ARTICLE.getAction(), cid+"", request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.DEL_ARTICLE.getAction(), cid+"", request.getRemoteAddr(), this.getUid(request));
         } catch (Exception e) {
             String msg = "文章删除失败";
             if (e instanceof TipException) {

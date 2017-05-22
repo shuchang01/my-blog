@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.dao.MetaVoMapper;
 import com.my.blog.website.dto.MetaDto;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Vo.ContentVo;
 import com.my.blog.website.modal.Vo.MetaVo;
@@ -26,7 +26,7 @@ import com.my.blog.website.service.IRelationshipService;
 
 @Service
 public class MetaServiceImpl implements IMetaService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MetaServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(MetaServiceImpl.class);
 
 	@Resource
 	private MetaVoMapper metaDao;
@@ -95,10 +95,10 @@ public class MetaServiceImpl implements IMetaService {
 					if (null != contents) {
 						ContentVo temp = new ContentVo();
 						temp.setCid(r.getCid());
-						if (type.equals(Types.CATEGORY.getType())) {
+						if (type.equals(TypeEnum.CATEGORY.getType())) {
 							temp.setCategories(reMeta(name, contents.getCategories()));
 						}
-						if (type.equals(Types.TAG.getType())) {
+						if (type.equals(TypeEnum.TAG.getType())) {
 							temp.setTags(reMeta(name, contents.getTags()));
 						}
 						contentService.updateContentByCid(temp);
