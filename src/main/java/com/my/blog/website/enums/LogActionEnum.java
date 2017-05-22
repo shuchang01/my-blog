@@ -1,9 +1,9 @@
-package com.my.blog.website.dto;
+package com.my.blog.website.enums;
 
 /**
  * 日志表的action字段 
  */
-public enum LogActions {
+public enum LogActionEnum {
 
 	LOGIN("登录后台"), 
 	UP_PWD("修改密码"), 
@@ -17,7 +17,7 @@ public enum LogActions {
 
 	private String action;
 	
-	LogActions(String action) {
+	LogActionEnum(String action) {
 		this.action = action;
 	}
 

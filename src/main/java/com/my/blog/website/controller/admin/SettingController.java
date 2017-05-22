@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.controller.common.AbstractBaseController;
-import com.my.blog.website.dto.LogActions;
+import com.my.blog.website.enums.LogActionEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.BackResponseBo;
 import com.my.blog.website.modal.Bo.RestResponseBo;
@@ -83,7 +83,7 @@ public class SettingController extends AbstractBaseController {
             if (StringUtils.isNotBlank(site_theme)) {
                 AbstractBaseController.THEME = "themes/" + site_theme;
             }
-            logService.insertLog(LogActions.SYS_SETTING.getAction(), GsonUtils.toJsonString(querys), request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.SYS_SETTING.getAction(), GsonUtils.toJsonString(querys), request.getRemoteAddr(), this.getUid(request));
             return RestResponseBo.ok();
         } catch (Exception e) {
             String msg = "保存设置失败";
@@ -113,7 +113,7 @@ public class SettingController extends AbstractBaseController {
         }
         try {
             BackResponseBo backResponse = siteService.backup(bk_type, bk_path, "yyyyMMddHHmm");
-            logService.insertLog(LogActions.SYS_BACKUP.getAction(), null, request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.SYS_BACKUP.getAction(), null, request.getRemoteAddr(), this.getUid(request));
             return RestResponseBo.ok(backResponse);
         } catch (Exception e) {
             String msg = "备份失败";

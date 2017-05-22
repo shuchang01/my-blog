@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
 import com.my.blog.website.controller.common.AbstractBaseController;
-import com.my.blog.website.dto.LogActions;
-import com.my.blog.website.dto.Types;
+import com.my.blog.website.enums.LogActionEnum;
+import com.my.blog.website.enums.TypeEnum;
 import com.my.blog.website.exception.TipException;
 import com.my.blog.website.modal.Bo.RestResponseBo;
 import com.my.blog.website.modal.Vo.ContentVo;
@@ -46,7 +46,7 @@ public class PageController extends AbstractBaseController {
     public String index(HttpServletRequest request) {
         ContentVoExample contentVoExample = new ContentVoExample();
         contentVoExample.setOrderByClause("created desc");
-        contentVoExample.createCriteria().andTypeEqualTo(Types.PAGE.getType());
+        contentVoExample.createCriteria().andTypeEqualTo(TypeEnum.PAGE.getType());
         PageInfo<ContentVo> contentsPaginator = contentsService.getArticlesWithpage(contentVoExample, 1, WebConst.MAX_POSTS);
         request.setAttribute("articles", contentsPaginator);
         return "admin/page_list";
@@ -78,7 +78,7 @@ public class PageController extends AbstractBaseController {
         contents.setContent(content);
         contents.setStatus(status);
         contents.setSlug(slug);
-        contents.setType(Types.PAGE.getType());
+        contents.setType(TypeEnum.PAGE.getType());
         if (null != allowComment) {
             contents.setAllowComment(allowComment == 1);
         }
@@ -117,7 +117,7 @@ public class PageController extends AbstractBaseController {
         contents.setContent(content);
         contents.setStatus(status);
         contents.setSlug(slug);
-        contents.setType(Types.PAGE.getType());
+        contents.setType(TypeEnum.PAGE.getType());
         if (null != allowComment) {
             contents.setAllowComment(allowComment == 1);
         }
@@ -146,7 +146,7 @@ public class PageController extends AbstractBaseController {
     public RestResponseBo delete(@RequestParam int cid, HttpServletRequest request) {
         try {
             contentsService.deleteByCid(cid);
-            logService.insertLog(LogActions.DEL_PAGE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
+            logService.insertLog(LogActionEnum.DEL_PAGE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
         } catch (Exception e) {
             String msg = "页面删除失败";
             if (e instanceof TipException) {

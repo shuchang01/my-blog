@@ -1,6 +1,6 @@
-package com.my.blog.website.dto;
+package com.my.blog.website.enums;
 
-public enum Types {
+public enum TypeEnum {
     TAG("tag"),
     CATEGORY("category"),
     ARTICLE("post"),
@@ -34,7 +34,7 @@ public enum Types {
         this.type = type;
     }
 
-    Types(java.lang.String type) {
+    TypeEnum(java.lang.String type) {
         this.type = type;
     }
 }

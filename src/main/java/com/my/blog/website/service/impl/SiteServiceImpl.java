@@ -1,35 +1,47 @@
 package com.my.blog.website.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.my.blog.website.dao.AttachVoMapper;
-import com.my.blog.website.dto.MetaDto;
-import com.my.blog.website.exception.TipException;
-import com.my.blog.website.modal.Bo.ArchiveBo;
-import com.my.blog.website.modal.Vo.*;
-import com.my.blog.website.service.ISiteService;
-import com.my.blog.website.utils.DateKit;
-import com.my.blog.website.utils.TaleUtils;
-import com.my.blog.website.utils.backup.Backup;
-import com.my.blog.website.constant.WebConst;
-import com.my.blog.website.controller.admin.AttachController;
-import com.my.blog.website.dao.CommentVoMapper;
-import com.my.blog.website.dao.ContentVoMapper;
-import com.my.blog.website.dao.MetaVoMapper;
-import com.my.blog.website.dto.Types;
-import com.my.blog.website.modal.Bo.BackResponseBo;
-import com.my.blog.website.modal.Bo.StatisticsBo;
-import com.my.blog.website.utils.ZipUtils;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.*;
+import com.github.pagehelper.PageHelper;
+import com.my.blog.website.constant.WebConst;
+import com.my.blog.website.controller.admin.AttachController;
+import com.my.blog.website.dao.AttachVoMapper;
+import com.my.blog.website.dao.CommentVoMapper;
+import com.my.blog.website.dao.ContentVoMapper;
+import com.my.blog.website.dao.MetaVoMapper;
+import com.my.blog.website.dto.MetaDto;
+import com.my.blog.website.enums.TypeEnum;
+import com.my.blog.website.exception.TipException;
+import com.my.blog.website.modal.Bo.ArchiveBo;
+import com.my.blog.website.modal.Bo.BackResponseBo;
+import com.my.blog.website.modal.Bo.StatisticsBo;
+import com.my.blog.website.modal.Vo.AttachVoExample;
+import com.my.blog.website.modal.Vo.CommentVo;
+import com.my.blog.website.modal.Vo.CommentVoExample;
+import com.my.blog.website.modal.Vo.ContentVo;
+import com.my.blog.website.modal.Vo.ContentVoExample;
+import com.my.blog.website.modal.Vo.MetaVoExample;
+import com.my.blog.website.service.ISiteService;
+import com.my.blog.website.utils.DateKit;
+import com.my.blog.website.utils.TaleUtils;
+import com.my.blog.website.utils.ZipUtils;
+import com.my.blog.website.utils.backup.Backup;
 
 /**
  * Created by BlueT on 2017/3/7.
@@ -72,7 +84,7 @@ public class SiteServiceImpl implements ISiteService {
             limit = 10;
         }
         ContentVoExample example = new ContentVoExample();
-        example.createCriteria().andStatusEqualTo(Types.PUBLISH.getType()).andTypeEqualTo(Types.ARTICLE.getType());
+        example.createCriteria().andStatusEqualTo(TypeEnum.PUBLISH.getType()).andTypeEqualTo(TypeEnum.ARTICLE.getType());
         example.setOrderByClause("created desc");
         PageHelper.startPage(1, limit);
         List<ContentVo> list = contentDao.selectByExample(example);
@@ -157,7 +169,7 @@ public class SiteServiceImpl implements ISiteService {
         StatisticsBo statistics = new StatisticsBo();
 
         ContentVoExample contentVoExample = new ContentVoExample();
-        contentVoExample.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+        contentVoExample.createCriteria().andTypeEqualTo(TypeEnum.ARTICLE.getType()).andStatusEqualTo(TypeEnum.PUBLISH.getType());
         Long articles =   contentDao.countByExample(contentVoExample);
 
         Long comments = commentDao.countByExample(new CommentVoExample());
@@ -165,7 +177,7 @@ public class SiteServiceImpl implements ISiteService {
         Long attachs = attachDao.countByExample(new AttachVoExample());
 
         MetaVoExample metaVoExample = new MetaVoExample();
-        metaVoExample.createCriteria().andTypeEqualTo(Types.LINK.getType());
+        metaVoExample.createCriteria().andTypeEqualTo(TypeEnum.LINK.getType());
         Long links = metaDao.countByExample(metaVoExample);
 
         statistics.setArticles(articles);
@@ -183,7 +195,7 @@ public class SiteServiceImpl implements ISiteService {
         if (null != archives) {
             archives.forEach(archive -> {
                 ContentVoExample example = new ContentVoExample();
-                ContentVoExample.Criteria criteria = example.createCriteria().andTypeEqualTo(Types.ARTICLE.getType()).andStatusEqualTo(Types.PUBLISH.getType());
+                ContentVoExample.Criteria criteria = example.createCriteria().andTypeEqualTo(TypeEnum.ARTICLE.getType()).andStatusEqualTo(TypeEnum.PUBLISH.getType());
                 example.setOrderByClause("created desc");
                 String date = archive.getDate();
                 Date sd = DateKit.dateFormat(date, "yyyy年MM月");
