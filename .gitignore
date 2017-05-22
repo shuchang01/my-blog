@@ -12,6 +12,9 @@
 *.iml
 *.ipr
 
+### eclipse  ###
+###.settings/
+
 ### NetBeans ###
 nbproject/private/
 build/
@@ -20,9 +23,9 @@ dist/
 nbdist/
 .nb-gradle/
 
-###my own###
+### my own ###
 logs
 upload
 target
 tale.sql
-### *.md ###
+*.md 
