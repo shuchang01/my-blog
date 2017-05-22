@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
-import com.my.blog.website.controller.AbstractBaseController;
+import com.my.blog.website.controller.common.AbstractBaseController;
 import com.my.blog.website.dto.LogActions;
 import com.my.blog.website.dto.Types;
 import com.my.blog.website.exception.TipException;

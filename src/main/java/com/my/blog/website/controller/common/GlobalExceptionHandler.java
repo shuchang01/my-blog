@@ -1,4 +1,4 @@
-package com.my.blog.website.controller;
+package com.my.blog.website.controller.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

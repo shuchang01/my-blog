@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
 import com.my.blog.website.constant.WebConst;
-import com.my.blog.website.controller.AbstractBaseController;
+import com.my.blog.website.controller.common.AbstractBaseController;
 import com.my.blog.website.dto.LogActions;
 import com.my.blog.website.dto.Types;
 import com.my.blog.website.exception.TipException;
