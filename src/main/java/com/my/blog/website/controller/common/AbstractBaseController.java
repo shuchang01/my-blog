@@ -1,4 +1,4 @@
-package com.my.blog.website.controller;
+package com.my.blog.website.controller.common;
 
 import com.my.blog.website.modal.Vo.UserVo;
 import com.my.blog.website.utils.TaleUtils;

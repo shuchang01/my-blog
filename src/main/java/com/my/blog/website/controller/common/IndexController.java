@@ -1,4 +1,4 @@
-package com.my.blog.website.controller;
+package com.my.blog.website.controller.common;
 
 import java.net.URLEncoder;
 import java.util.List;

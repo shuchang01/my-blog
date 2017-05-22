@@ -31,6 +31,7 @@ public class MapCache {
     }
 
     public MapCache(int cacheCount) {
+    	// ConcurrentHashMap< K, V > 的K, V 均不能为null
         cachePool = new ConcurrentHashMap<>(cacheCount);
     }
 
