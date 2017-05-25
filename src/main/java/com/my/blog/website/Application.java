@@ -19,7 +19,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 @MapperScan("com.my.blog.website.dao")
 @SpringBootApplication
 @EnableTransactionManagement
-public class MainApp {
+public class Application {
 	
 	@Bean(initMethod = "init", destroyMethod = "close")
 	@ConfigurationProperties(prefix = "spring.datasource")
@@ -42,6 +42,6 @@ public class MainApp {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(MainApp.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
