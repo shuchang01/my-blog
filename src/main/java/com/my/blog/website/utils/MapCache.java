@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * map缓存实现
+ * map缓存实现, 单例模式
  * <p>
  * Created by 13 on 2017/2/7.
  */
@@ -15,10 +15,10 @@ public class MapCache {
      */
     private static final int DEFAULT_CACHES = 1024;
 
-    private static final MapCache INS = new MapCache();
+    private static final MapCache INS = instance();
 
-    public static MapCache single() {
-        return INS;
+    public static MapCache instance() {
+		return INS == null ? new MapCache() : INS;
     }
 
     /**

@@ -1,10 +1,10 @@
 package com.my.blog.website.controller.common;
 
-import com.my.blog.website.modal.Vo.UserVo;
-import com.my.blog.website.utils.TaleUtils;
-import com.my.blog.website.utils.MapCache;
-
 import javax.servlet.http.HttpServletRequest;
+
+import com.my.blog.website.modal.Vo.UserVo;
+import com.my.blog.website.utils.MapCache;
+import com.my.blog.website.utils.TaleUtils;
 
 /**
  * Created by 13 on 2017/2/21.
@@ -13,7 +13,7 @@ public abstract class AbstractBaseController {
 
     public static String THEME = "themes/default";
 
-    protected MapCache cache = MapCache.single();
+    protected MapCache cache = MapCache.instance();
 
     /**
      * 主页的页面主题

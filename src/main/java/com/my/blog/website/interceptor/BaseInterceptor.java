@@ -33,7 +33,7 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Resource
     private IUserService userService;
 
-    private MapCache cache = MapCache.single();
+    private MapCache cache = MapCache.instance();
 
     @Resource
     private Commons commons;
