@@ -7,7 +7,9 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -19,7 +21,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 @MapperScan("com.my.blog.website.dao")
 @SpringBootApplication
 @EnableTransactionManagement
-public class Application {
+public class Application extends SpringBootServletInitializer {
 	
 	@Bean(initMethod = "init", destroyMethod = "close")
 	@ConfigurationProperties(prefix = "spring.datasource")
@@ -41,7 +43,19 @@ public class Application {
 		return new DataSourceTransactionManager(dataSource());
 	}
 
+	/**
+	 * spring-boot-1.5.3+, 打jar包方式启动入口
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+	}
+
+	/**
+	 * 打war包方式启动入口, 修改启动类, 继承 SpringBootServletInitializer类 并重写 configure 方法
+	 */
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(Application.class);
 	}
 }

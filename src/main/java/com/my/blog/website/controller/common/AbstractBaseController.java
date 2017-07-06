@@ -2,6 +2,9 @@ package com.my.blog.website.controller.common;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.my.blog.website.modal.Vo.UserVo;
 import com.my.blog.website.utils.MapCache;
 import com.my.blog.website.utils.TaleUtils;
@@ -10,9 +13,11 @@ import com.my.blog.website.utils.TaleUtils;
  * Created by 13 on 2017/2/21.
  */
 public abstract class AbstractBaseController {
+	
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
     public static String THEME = "themes/default";
-
+    
     protected MapCache cache = MapCache.instance();
 
     /**

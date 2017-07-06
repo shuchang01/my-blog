@@ -14,9 +14,10 @@
     <!--<version>1.0.1-SNAPSHOT</version>-->
     <!-- docker -->
     <!--<version>2.0.1-SNAPSHOT</version>-->
+    <packaging>war</packaging>
 
     <name>${finalName}</name>
-    <description>my-blog</description>
+    <description>【my-blog】war包对应的pom，打war包，执行【mvn clean package -f pom-war.xml】</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -155,12 +156,12 @@
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-<!--             <exclusions> -->
-<!--             	<exclusion> -->
-<!--             		<groupId>org.springframework.boot</groupId> -->
-<!--             		<artifactId>spring-boot-starter-tomcat</artifactId> -->
-<!--             	</exclusion> -->
-<!--             </exclusions> -->
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.springframework.boot</groupId>
+            		<artifactId>spring-boot-starter-tomcat</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <!-- spring-boot, thymeleaf template -->
         <dependency>
